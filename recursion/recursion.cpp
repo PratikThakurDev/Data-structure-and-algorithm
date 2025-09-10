@@ -391,6 +391,34 @@ vector<vector<string>> partition(string s) {
     return ans ;
 }
 
+bool dfs(string &word, vector<vector<char>> &board, int row, int col, int index) {
+    if (index == word.size()) return true;
+
+    if (row < 0 || col < 0 || row >= board.size() || col >= board[0].size() || board[row][col] != word[index])
+        return false;
+
+    char temp = board[row][col];
+    board[row][col] = '#';  
+
+    bool found = dfs(word, board, row + 1, col, index + 1) ||
+                 dfs(word, board, row - 1, col, index + 1) ||
+                 dfs(word, board, row, col + 1, index + 1) ||
+                 dfs(word, board, row, col - 1, index + 1);
+
+    board[row][col] = temp; 
+    return found;
+}
+
+bool exist(vector<vector<char>> &board, string word) {
+    int rows = board.size();
+    int cols = board[0].size();
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (dfs(word, board, i, j, 0)) return true;
+        }
+    }
+    return false;
+}
 
 int main() {
     ios::sync_with_stdio(0);
