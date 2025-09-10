@@ -357,7 +357,39 @@ vector<string> letterCombinations ( string s ) {
     return ans ;
 }
 
+bool isPalindrome ( string &s , int left , int right ) {
 
+    while ( left <= right ) {
+        if ( s[left] != s[right] ) {
+            return false ;
+        }
+        left++ ;
+        right-- ;
+    }
+    return true ;
+}
+
+void partitionHelper ( int index , vector<vector<string>> & ans , vector<string> &ds , string &s , int n ) {
+    if ( index == n ) {
+        ans.push_back( ds ) ;
+        return ;
+    }
+    for ( int i = index ; i < n ; i++ ) {
+        if ( isPalindrome ( s , index , i )) {
+            ds.push_back(s.substr(index , i - index +1  ) ) ;
+            partitionHelper ( i + 1 , ans , ds , s , n) ;
+            ds.pop_back() ;
+        }
+    }
+}
+
+vector<vector<string>> partition(string s) {
+    int n = s.size() ;
+    vector<vector<string>> ans ;
+    vector<string> ds ;
+    partitionHelper(0 , ans , ds ,s , n) ;
+    return ans ;
+}
 
 
 int main() {
