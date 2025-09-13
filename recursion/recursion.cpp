@@ -511,6 +511,37 @@ bool solveSudoku(vector < vector < char >> & board) {
   return true;
 }
 
+vector<string> addOperators(string num, int target) {
+    vector<string> result;
+    backtrack(num, target, 0, "", 0, 0, result);
+    return result;
+}
+
+
+void backtrack(const string &num, int target, int index, string path, long long currEval, long long lastOperand, vector<string> &result) {
+    if (index == num.size()) {
+        if (currEval == target) {
+            result.push_back(path);
+        }
+        return;
+    }
+
+    for (int i = index; i < num.size(); ++i) {
+        if (i != index && num[index] == '0') break;
+
+        string operand_str = num.substr(index, i - index + 1);
+        long long operand = stoll(operand_str);
+
+        if (index == 0) {
+            backtrack(num, target, i + 1, operand_str, operand, operand, result);
+        } else {
+            backtrack(num, target, i + 1, path + "+" + operand_str, currEval + operand, operand, result);
+            backtrack(num, target, i + 1, path + "-" + operand_str, currEval - operand, -operand, result);
+            backtrack(num, target, i + 1, path + "*" + operand_str, currEval - lastOperand + lastOperand * operand, lastOperand * operand, result);
+        }
+    }
+}
+
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
