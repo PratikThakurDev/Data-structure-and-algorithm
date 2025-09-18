@@ -49,6 +49,58 @@ public :
 
 } ;
 
+class TaskManager {
+public:
+
+    unordered_map< int , set<pair<int , int >>> Add ;
+    unordered_map< int , pair<int , int >> taskInfo ;
+    set< pair<int,int> > taskList ;
+    TaskManager(vector<vector<int>>& tasks) {
+        for ( int i = 0 ; i < tasks.size() ; i++ ) {
+            int userId = tasks[i][0] ;
+            int taskId = tasks[i][1] ;
+            int priority = tasks[i][2] ;
+            Add[userId].insert{-priority , -taskId} ;
+            taskInfo[taskId] = {userId , priority } ;
+            taskList.insert( {-priority , -taskId}) ;
+        }
+    }
+    
+    void add(int userId, int taskId, int priority) {
+        Add[userId].insert({-priority , -taskId })  ;
+        taskInfo[taskId] = {userId , priority } ;
+        taskList.insert({-priority , -taskId }) ;
+    }
+    
+    void edit(int taskId, int newPriority) {
+        int oldPriority = taskInfo[taskId].second ;
+        taskInfo[taskId].second = newPriority ;
+        int user = taskInfo[taskId].first ;
+        auto& mySet = Add[user] ;
+        taskList.erase({-oldPriority , -taskId}) ;
+        taskList.insert({-newPriority , -taskId}) ;
+        mySet.erase({-oldPriority , -taskId}) ;
+        mySet.insert({-newPriority , -taskId}) ;
+    }
+    
+    void rmv(int taskId) {
+        int userId = taskInfo[taskId].first ;
+        int priority = taskInfo[taskId].second ;
+        auto& mySet = Add[userId ] ;
+        mySet.erase({-priority , -taskId}) ;
+        taskInfo.erase(taskId) ;
+        taskList.erase({-priority , -taskId}) ;
+    }
+    
+    int execTop() {
+        if ( taskList.empty()) return -1 ;
+        int taskId = -taskList.begin()->second ;
+        int userId = taskInfo[taskId].first ;
+        rmv( taskId ) ;
+        return userId ;
+    }
+};
+
 int main ( ) {
 
 return 0;
