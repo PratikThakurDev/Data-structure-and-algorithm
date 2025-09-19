@@ -101,6 +101,42 @@ public:
     }
 };
 
+class Spreadsheet {
+public:
+
+    unordered_map<int ,vector<int>> spreadSheet ;
+    Spreadsheet(int rows) {
+        for ( int i = 0 ; i < 26 ; i++ ) {
+            spreadSheet[i] = vector<int> (rows , 0) ;
+        }
+    }
+    
+    void setCell(string cell, int value) {
+        spreadSheet[cell[0]-'A'][stoi(cell.substr(1)) - 1] = value ;
+    }
+    
+    void resetCell(string cell) {
+        spreadSheet[cell[0]-'A'][stoi(cell.substr(1)) - 1] = 0 ; 
+    }
+    
+    int getValue(string formula) {
+        formula = formula.substr(1) ;
+        int operatorPos = formula.find('+') ;
+        int val1 ;
+        int val2 ;
+        string part1 = formula.substr(0,operatorPos) ;
+        string part2 = formula.substr(operatorPos + 1 ) ;
+        if ( isalpha(part1[0])) {
+            val1 = spreadSheet[part1[0]-'A'][stoi(part1.substr(1)) - 1] ;
+        } else val1 = stoi(part1) ;
+        if ( isalpha(part2[0])) {
+            val2 = spreadSheet[part2[0]-'A'][stoi(part2.substr(1)) - 1] ;
+        } else val2 = stoi(part2) ;
+        return val1 + val2 ;
+    }
+};
+
+
 int main ( ) {
 
 return 0;
