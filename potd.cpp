@@ -136,6 +136,81 @@ public:
     }
 };
 
+class Router {
+private:
+    int maxCapacity;
+    deque<vector<int>> packetQueue;
+    unordered_set<string> existingPackets;
+    unordered_map<int, vector<int>> destinationToTimestamps;
+
+    string makePacketKey(int source, int destination, int timestamp) {
+        return to_string(source) + "#" + to_string(destination) + "#" + to_string(timestamp);
+    }
+
+public:
+    Router(int memoryLimit) {
+        maxCapacity = memoryLimit ;
+    }
+
+    bool addPacket(int source, int destination, int timestamp) {
+        string packetKey = makePacketKey(source, destination, timestamp);
+        if (existingPackets.find(packetKey) != existingPackets.end()) {
+            return false;
+        }
+
+        if (packetQueue.size() == maxCapacity) {
+            vector<int>& oldestPacket = packetQueue.front();
+            string oldestKey = makePacketKey(oldestPacket[0], oldestPacket[1], oldestPacket[2]);
+
+            existingPackets.erase(oldestKey);
+
+            auto& timestamps = destinationToTimestamps[oldestPacket[1]];
+            auto it = lower_bound(timestamps.begin(), timestamps.end(), oldestPacket[2]);
+            if (it != timestamps.end() && *it == oldestPacket[2]) {
+                timestamps.erase(it);
+            }
+
+            packetQueue.pop_front();
+        }
+
+        packetQueue.push_back({source, destination, timestamp});
+        existingPackets.insert(packetKey);
+        destinationToTimestamps[destination].push_back(timestamp);
+
+        return true;
+    }
+
+    vector<int> forwardPacket() {
+        if (packetQueue.empty()) {
+            return {};
+        }
+
+        vector<int> oldestPacket = packetQueue.front();
+        packetQueue.pop_front();
+
+        string packetKey = makePacketKey(oldestPacket[0], oldestPacket[1], oldestPacket[2]);
+        existingPackets.erase(packetKey);
+
+        auto& timestamps = destinationToTimestamps[oldestPacket[1]];
+        auto it = lower_bound(timestamps.begin(), timestamps.end(), oldestPacket[2]);
+        if (it != timestamps.end() && *it == oldestPacket[2]) {
+            timestamps.erase(it);
+        }
+
+        return oldestPacket;
+    }
+
+    int getCount(int destination, int startTime, int endTime) {
+        if (destinationToTimestamps.find(destination) == destinationToTimestamps.end()) {
+            return 0;
+        }
+
+        const auto& timestamps = destinationToTimestamps[destination];
+        auto lower = lower_bound(timestamps.begin(), timestamps.end(), startTime);
+        auto upper = upper_bound(timestamps.begin(), timestamps.end(), endTime);
+        return distance(lower, upper);
+    }
+};
 
 int main ( ) {
 
