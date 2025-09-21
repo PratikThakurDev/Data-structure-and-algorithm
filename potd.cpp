@@ -212,6 +212,54 @@ public:
     }
 };
 
+class MovieRentingSystem {
+private:
+    unordered_map<int, set<vector<int>>> unrentedMovies;
+    set<vector<int>> rentedMovies;
+    map<pair<int, int>, int> priceLookup;
+
+public:
+    MovieRentingSystem(int n, vector<vector<int>>& entries) {
+        for (const auto& entry : entries) {
+            int shop = entry[0], movie = entry[1], price = entry[2];
+            unrentedMovies[movie].insert({price, shop});
+            priceLookup[{shop, movie}] = price;
+        }
+    }
+
+    vector<int> search(int movie) {
+        vector<int> result;
+        int count = 0;
+        for (const auto& info : unrentedMovies[movie]) {
+            result.push_back(info[1]);
+            if (++count == 5) break;
+        }
+        return result;
+    }
+
+    void rent(int shop, int movie) {
+        int price = priceLookup[{shop, movie}];
+        unrentedMovies[movie].erase({price, shop});
+        rentedMovies.insert({price, shop, movie});
+    }
+
+    void drop(int shop, int movie) {
+        int price = priceLookup[{shop, movie}];
+        rentedMovies.erase({price, shop, movie});
+        unrentedMovies[movie].insert({price, shop});
+    }
+
+    vector<vector<int>> report() {
+        vector<vector<int>> result;
+        int count = 0;
+        for (const auto& rental : rentedMovies) {
+            result.push_back({rental[1], rental[2]});
+            if (++count == 5) break;
+        }
+        return result;
+    }
+};
+
 int main ( ) {
 
 return 0;
