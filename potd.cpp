@@ -260,6 +260,26 @@ public:
     }
 };
 
+int maxFrequencyElements(vector<int>& nums) {
+    unordered_map<int,int> freqMap ;
+    for (int num : nums) {
+        freqMap[num] += 1 ;
+    }
+
+    int maxFreq = 0 ;
+    for (auto it : freqMap) {
+        if (it.second > maxFreq) {
+            maxFreq = it.second ;
+        }
+    }
+
+    int total = 0 ;
+    for (auto it : freqMap) {
+        if (it.second == maxFreq) total += maxFreq ;
+    }
+    return total ;
+}
+
 int main ( ) {
 
 return 0;
