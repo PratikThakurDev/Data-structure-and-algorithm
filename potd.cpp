@@ -280,6 +280,33 @@ int maxFrequencyElements(vector<int>& nums) {
     return total ;
 }
 
+int compareVersion(string version1, string version2) {
+    vector<int> v1, v2;
+    size_t pos = 0, found;
+
+    while ((found = version1.find('.', pos)) != string::npos) {
+        v1.push_back(stoi(version1.substr(pos, found - pos)));
+        pos = found + 1;
+    }
+    v1.push_back(stoi(version1.substr(pos)));
+
+    pos = 0;
+    while ((found = version2.find('.', pos)) != string::npos) {
+        v2.push_back(stoi(version2.substr(pos, found - pos)));
+        pos = found + 1;
+    }
+    v2.push_back(stoi(version2.substr(pos)));
+
+    int n = max(v1.size(), v2.size());
+    for (int i = 0; i < n; ++i) {
+        int num1 = i < (int)v1.size() ? v1[i] : 0;
+        int num2 = i < (int)v2.size() ? v2[i] : 0;
+        if (num1 < num2) return -1;
+        if (num1 > num2) return 1;
+    }
+    return 0;
+}
+
 int main ( ) {
 
 return 0;
