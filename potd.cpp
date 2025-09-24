@@ -60,7 +60,7 @@ public:
             int userId = tasks[i][0] ;
             int taskId = tasks[i][1] ;
             int priority = tasks[i][2] ;
-            Add[userId].insert{-priority , -taskId} ;
+            Add[userId].insert({-priority , -taskId}) ;
             taskInfo[taskId] = {userId , priority } ;
             taskList.insert( {-priority , -taskId}) ;
         }
@@ -305,6 +305,32 @@ int compareVersion(string version1, string version2) {
         if (num1 > num2) return 1;
     }
     return 0;
+}
+
+string fractionToDecimal(int numerator, int denominator) {
+    if (numerator == 0) return "0";
+    string ans;
+    if ((numerator < 0) ^ (denominator < 0)) ans += '-';
+    long long n = abs((long long)numerator);
+    long long d = abs((long long)denominator);
+    ans += to_string(n / d);
+    n %= d;
+    if (n == 0) return ans;
+    ans += '.';
+    unordered_map<long long, int> pos;
+    string frac;
+    while (n != 0) {
+        if (pos.count(n)) {
+            frac.insert(pos[n], "(");
+            frac += ")";
+            break;
+        }
+        pos[n] = frac.size();
+        n *= 10;
+        frac += to_string(n / d);
+        n %= d;
+    }
+    return ans + frac;
 }
 
 int main ( ) {
