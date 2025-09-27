@@ -4,7 +4,7 @@ using namespace std ;
 // bool checkIthBit(int n, int i) {
 //     string binaryForm ;
 //     while ( n > 0 ) {
-//         binaryForm += n % 2 == 0 ? 0 : 1 ;
+//         binaryForm += (n % 2) == 0 ? '0' : '1' ;
 //         n = n / 2 ;
 //     }
 //     if ( binaryForm.size() > i) return false ;
@@ -18,7 +18,19 @@ bool checkIthBit ( int n , int i ) {
 }
 
 bool checkEven ( int n ) {
-    
+
     return ( (n & 1) == '0' ) ;
 }
 
+bool isPowerOfTwo(int n) {
+    string binary ;
+    while ( n > 0 ) {
+        binary += (n % 2) == 0 ? '0' : '1' ;
+        n = n / 2 ;
+    }
+    for ( int i = 0 ; i < binary.size() - 1 ; i++ ) {
+        if ( binary[i] == '1' ) return false ;
+    }
+
+    return true ;
+}
