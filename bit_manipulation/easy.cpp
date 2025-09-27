@@ -16,3 +16,9 @@ bool checkIthBit ( int n , int i ) {
      
     return ( (n & ( 1 << i))!= '0' ) ;
 }
+
+bool checkEven ( int n ) {
+    
+    return ( (n & 1) == '0' ) ;
+}
+
