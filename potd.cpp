@@ -363,6 +363,34 @@ int triangleNumber(vector<int>& nums) {
     return count;
 }
 
+double euclidConstants ( vector<int> point1 , vector<int> point2 ) {
+    int x = point1[0] - point2[0] ;
+    int y = point1[1] - point2[1] ;
+    return sqrt(x*x + y*y) ;
+}
+
+bool isValidTriangle ( double a , double b , double c ) {
+    return a + b > c && a + c > b && b + c > a ;
+}
+
+double largestTriangleArea(vector<vector<int>>& points) {
+    int n = points.size() ;
+    double maxArea = 0 ;
+    for ( int i = 0 ; i < n ; i++ ) {
+        for ( int j = i + 1 ; j < n ; j++ ) {
+            for ( int k = j + 1 ; k < n ; k++ ) {
+                double a = euclidConstants( points[i] , points[j]) ;
+                double b = euclidConstants( points[j] , points[k]) ;
+                double c = euclidConstants( points[k] , points[i]) ;
+                if ( ! (isValidTriangle( a , b , c))) continue ;
+                double s = (a + b + c ) / 2 ;
+                maxArea = max ( maxArea , sqrt(s*(s-a)*(s-b)*(s-c))) ;
+            }
+        }
+    }
+    return maxArea ;
+}
+
 int main ( ) {
 
 return 0;
