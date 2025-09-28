@@ -58,3 +58,49 @@ int distinctPoints(string s, int k) {
 
     return results.size();
 }
+
+vector<int> decimalRepresentation(int n) {
+    vector<int> res ;
+    int power = -1 ;
+    while ( n > 0 ) {
+        int rem = n % 10 ;
+        power++ ;
+        n = n / 10 ;
+        if ( rem == 0 ) continue ;
+        res.push_back(rem*(int)(pow(10 ,power))) ;
+
+    }
+    reverse(res.begin(),res.end()) ;
+    return res ;
+}
+
+long long splitArrayMinDifference(vector<int>& nums) {
+    int length = nums.size();
+    long long minimumDifference = LLONG_MAX;
+    bool foundValidSplit = false;
+    vector<long long> prefixSum(length + 1, 0);
+
+    for (int idx = 0; idx < length; ++idx)
+        prefixSum[idx + 1] = prefixSum[idx] + nums[idx];
+
+    vector<bool> increasingLeft(length, true);
+    vector<bool> decreasingRight(length, true);
+
+    for (int idx = 1; idx < length; ++idx)
+        increasingLeft[idx] = increasingLeft[idx - 1] && nums[idx] > nums[idx - 1];
+    for (int idx = length - 2; idx >= 0; --idx)
+        decreasingRight[idx] = decreasingRight[idx + 1] && nums[idx] > nums[idx + 1];
+
+    for (int split = 1; split < length; ++split) {
+        vector<int> plomaresto(nums);
+        if (increasingLeft[split - 1] && decreasingRight[split]) {
+            long long leftSum = prefixSum[split];
+            long long rightSum = prefixSum[length] - prefixSum[split];
+            long long currentDifference = abs(leftSum - rightSum);
+            minimumDifference = min(minimumDifference, currentDifference);
+            foundValidSplit = true;
+        }
+    }
+
+    return foundValidSplit ? minimumDifference : -1;
+}
