@@ -391,6 +391,45 @@ double largestTriangleArea(vector<vector<int>>& points) {
     return maxArea ;
 }
 
+// int largestPerimeter(vector<int>& nums) {
+//     int n = nums.size() ;
+//     int i = 0 , j = 1 , k = 2 ;
+//     int maxPeri = 0 ;
+//     for ( int i = 0 ; i < n ; i++ ) {
+//         for ( int j = i + 1 ; j < n ; j++ ) {
+//             for ( int k = j + 1 ; k < n ; k++ ) {
+//                 int a = nums[i] ;
+//                 int b = nums[j] ;
+//                 int c = nums[k] ;
+//                 if ( isValidTriangle(a,b,c) ) {
+//                     int peri = a + b + c ;
+//                     maxPeri = max ( maxPeri , peri ) ;
+//                 }
+//             }
+//         }
+
+//     }
+//     return maxPeri ;
+// }
+
+int largestPerimeter ( vector<int>& nums ) {
+    int n = nums.size() ;
+    int maxPeri = 0 ;
+    for (int k = n - 1; k >= 2; --k) {
+        int i = 0, j = k - 1;
+        while (i < j) {
+            if (nums[i] + nums[j] > nums[k]) {
+                int peri = nums[i] + nums[j] + nums[k] ;
+                maxPeri = max ( maxPeri , peri ) ;
+                j--;
+            } else {
+                i++;
+            }
+        }
+    }
+    return maxPeri ;
+}
+
 int main ( ) {
 
 return 0;
