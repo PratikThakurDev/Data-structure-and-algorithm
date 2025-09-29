@@ -86,6 +86,16 @@ int minBitFlips(int start, int goal) {
     return cnt ;
 }
 
+int xorrTillN ( int n ) {
+    if ( n % 4 == 1 ) return 1 ;
+    if ( n % 4 == 2 ) return n + 1 ;
+    if ( n % 4 == 3 ) return 0 ; 
+}
+
+int findXorRange ( int l , int r ) {
+    return xorrTillN(l - 1) ^ xorrTillN( r ) ;
+}
+
 int main() {
 
 return 0 ;
