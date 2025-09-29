@@ -34,3 +34,28 @@ bool isPowerOfTwo(int n) {
 
     return true ;
 }
+
+int countSetBits( int n ) {
+    int cnt = 0 ;
+    // while ( n > 0 ) {
+    //     cnt += n & 1 ;
+    //     n = n >> 1 ;
+    // }
+
+    while ( n != 0 ) {
+        n = n & ( n - 1 ) ;
+        cnt++ ;
+    }
+    return cnt ;
+}
+
+void swapNum ( int a , int b ) {
+    a = a ^ b ;
+    b = a ^ b ;
+    a = a ^ b ;
+}
+
+int main() {
+
+return 0 ;
+}
