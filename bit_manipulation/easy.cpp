@@ -76,6 +76,16 @@ int divide(int dividend, int divisor) {
     return sign ? int ( ans ) : - int (ans) ;
 }
 
+int minBitFlips(int start, int goal) {
+    int xorr = start ^ goal ;
+    int cnt = 0 ;
+    while ( xorr != 0 ) {
+        xorr = xorr & ( xorr - 1 ) ;
+        cnt ++ ;
+    }
+    return cnt ;
+}
+
 int main() {
 
 return 0 ;
