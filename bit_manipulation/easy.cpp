@@ -109,6 +109,21 @@ vector<int> printPRimeFactors ( int n ) {
     if ( n != 1 ) ans.push_back(n) ;
 }
 
+int countPrimes(int n) {
+    int cnt =0 ;
+    vector<int> primeList( n + 1 , 1 ) ;
+    for ( int i = 2 ; i*i <= n ; i++ ) {
+        if ( primeList[i] == 1 ) {
+            for ( int j = i * i ; j <= n ; j = j + i ) {
+                primeList[j] = 0 ;
+            }
+        }
+    }
+    for ( int i = 2 ; i < n ; i++ ) {
+        if ( primeList[i] == 1 ) cnt ++ ;
+    }
+    return cnt ;
+}
 
 int main() {
 
