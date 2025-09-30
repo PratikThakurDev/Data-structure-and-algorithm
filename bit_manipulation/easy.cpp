@@ -96,6 +96,20 @@ int findXorRange ( int l , int r ) {
     return xorrTillN(l - 1) ^ xorrTillN( r ) ;
 }
 
+vector<int> printPRimeFactors ( int n ) {
+    vector<int> ans ;
+    for ( int i = 2 ; i*i <= n ; i++ ) {
+        if ( n % i == 0 ) {
+            ans.push_back( i ) ;
+            while ( n % i == 0 ) {
+                n = n / 2 ;
+            }
+        }
+    }
+    if ( n != 1 ) ans.push_back(n) ;
+}
+
+
 int main() {
 
 return 0 ;
