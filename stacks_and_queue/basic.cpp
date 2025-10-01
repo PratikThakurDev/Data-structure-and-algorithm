@@ -41,7 +41,7 @@ class QueueUsingArray{
     public :
 
     QueueUsingArray() {
-        int Size = 1000 ;
+        int maxSize = 1000 ;
         arr = new int[maxSize] ;
         end = -1 , start = -1, currSize = 0 ;
     }
@@ -55,7 +55,6 @@ class QueueUsingArray{
     void push ( int newElement) {
         if ( currSize == maxSize ) {
             cout << "Queue is full " ;
-            exit(1) ;
         }
         if ( end == -1 ) {
             start = 0 , end = 0 ;
@@ -83,7 +82,6 @@ class QueueUsingArray{
     int top () { 
         if ( start == -1 ) {
             cout << " Queue empty " ;
-            exit(1) ;
         }
         return arr[start] ;
     }
@@ -120,6 +118,42 @@ public:
     
     bool empty() {
         if ( q.size() == 0 ) return true ;
+        return false ;
+    }
+};
+
+class MyQueue {
+public:
+    stack <int> input , output ;
+    MyQueue() {
+        
+    }
+    
+    void push(int x) {
+        while ( !input.empty() ) {
+            output.push( input.top() ) ;
+            input.pop() ;
+        }
+        input.push(x) ;
+        while ( !output.empty() ) {
+            input.push( output.top() ) ;
+            output.pop() ;
+        }
+    }
+    
+    int pop() {
+        if ( input.empty()) {} ;
+        int val = input.top() ;
+        input.pop() ;
+        return val ;
+    }
+    
+    int peek() {
+        return input.top() ;
+    }
+    
+    bool empty() {
+        if ( input.empty() ) return true ;
         return false ;
     }
 };
