@@ -11,6 +11,10 @@ class StackUsingArray{
         size = 1000 ;
         arr = new int[size] ;
     }
+    StackUsingArray ( int size ) {
+        top = -1 ;
+        arr = new int[size] ;
+    }
     void push(int x) {
         top++ ;
         arr[top] = x ;
@@ -28,6 +32,65 @@ class StackUsingArray{
     }
 } ;
 
+class QueueUsingArray{
+    int maxSize ;
+    int start ;
+    int end ;
+    int * arr ;
+    int currSize ;
+    public :
+    
+    QueueUsingArray() {
+        int Size = 1000 ;
+        arr = new int[maxSize] ;
+        end = -1 , start = -1, currSize = 0 ;
+    }
+
+    QueueUsingArray( int maxSize ) {
+        (*this).maxSize = maxSize ;
+        arr = new int[maxSize] ;
+        end = -1 , start = -1, currSize = 0 ;
+    }
+
+    void push ( int newElement) {
+        if ( currSize == maxSize ) {
+            cout << "Queue is full " ;
+            exit(1) ;
+        }
+        if ( end == -1 ) {
+            start = 0 , end = 0 ;
+        } else {
+            end = ( end + 1 ) % maxSize ;
+            arr[end] = newElement ;
+            currSize++ ;
+        }
+    }
+
+    int pop () {
+        if ( start == -1 ) {
+            cout << "queue empty" ;
+        }
+        int popped = arr[start] ;
+        if ( currSize == 1) {
+            start = -1 , end = -1 ;
+        } else {
+            start = ( start + 1 ) % maxSize ;
+            currSize-- ;
+            return popped ;
+        }
+    }
+
+    int top () { 
+        if ( start == -1 ) {
+            cout << " Queue empty " ;
+            exit(1) ;
+        }
+        return arr[start] ;
+    }
+    int size () {
+        return currSize ;
+    }
+} ;
 
 
 
