@@ -122,42 +122,26 @@ public:
     }
 };
 
-class MyQueue {
-public:
-    stack <int> input , output ;
-    MyQueue() {
-        
-    }
-    
-    void push(int x) {
-        while ( !input.empty() ) {
-            output.push( input.top() ) ;
-            input.pop() ;
-        }
-        input.push(x) ;
-        while ( !output.empty() ) {
-            input.push( output.top() ) ;
-            output.pop() ;
-        }
-    }
-    
-    int pop() {
-        if ( input.empty()) {} ;
-        int val = input.top() ;
-        input.pop() ;
-        return val ;
-    }
-    
-    int peek() {
-        return input.top() ;
-    }
-    
-    bool empty() {
-        if ( input.empty() ) return true ;
-        return false ;
-    }
-};
 
+bool isValid(string s) {
+    stack< char > st ;
+    int openedBrackets = 0 ;
+    for ( char it : s ) {
+        if ( it == '(' || it == '{' || it == '[' ) {
+            st.push(it) ;
+            openedBrackets++ ;
+        } else {
+            if ( openedBrackets == 0 ) return false ;
+            char lastOpened = st.top() ;
+            if ( it == ')' && lastOpened != '(' ) return false ;
+            if ( it == '}' && lastOpened != '{' ) return false ;
+            if ( it == ']' && lastOpened != '[' ) return false ;
+            st.pop() ;
+            openedBrackets-- ;
+        }
+    }
+    return (openedBrackets == 0)  ;
+}
 
 int main ( ) {
 
