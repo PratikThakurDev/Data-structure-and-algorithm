@@ -143,6 +143,50 @@ bool isValid(string s) {
     return (openedBrackets == 0)  ;
 }
 
+class MinStack {
+public:
+    stack <long long> st ;
+    long long mini = INT_MAX ;
+    MinStack() {
+
+    }
+    
+    void push(int val) {
+        long long value =( long long )val ;
+        if ( st.empty() ) {
+            st.push(value) ;
+            mini = value ;
+        } else {
+            if (value < mini ) {
+                mini = 2*value - mini ;
+                st.push(mini) ;
+                mini = value ;
+            } else st.push(value) ;
+        }
+    }
+    
+    void pop() {
+        if ( st.empty() ) return ;
+        long long ele = st.top() ;
+        st.pop() ;
+        if ( ele < mini ) {
+            mini = 2 * mini - ele ;
+        }
+    }
+    
+    int top() {
+        if (st.empty()) return -1;
+
+        long long el = st.top();
+        if (el < mini) return (int)mini;
+        return (int)el;
+    }
+    
+    int getMin() {
+        return (int)mini ;
+    }
+};
+
 int main ( ) {
 
 
