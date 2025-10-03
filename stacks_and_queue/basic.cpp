@@ -122,25 +122,23 @@ public:
     }
 };
 
-
 bool isValid(string s) {
-    stack< char > st ;
-    int openedBrackets = 0 ;
-    for ( char it : s ) {
-        if ( it == '(' || it == '{' || it == '[' ) {
-            st.push(it) ;
-            openedBrackets++ ;
+    stack<char> st;
+    for (char it : s) {
+        if (it == '(' || it == '{' || it == '[') {
+            st.push(it);
         } else {
-            if ( openedBrackets == 0 ) return false ;
-            char lastOpened = st.top() ;
-            if ( it == ')' && lastOpened != '(' ) return false ;
-            if ( it == '}' && lastOpened != '{' ) return false ;
-            if ( it == ']' && lastOpened != '[' ) return false ;
-            st.pop() ;
-            openedBrackets-- ;
+            if (st.empty()) return false;
+            char lastOpened = st.top();
+            if ((it == ')' && lastOpened != '(') ||
+                (it == '}' && lastOpened != '{') ||
+                (it == ']' && lastOpened != '[')) {
+                return false;
+            }
+            st.pop();
         }
     }
-    return (openedBrackets == 0)  ;
+    return st.empty();
 }
 
 class MinStack {
