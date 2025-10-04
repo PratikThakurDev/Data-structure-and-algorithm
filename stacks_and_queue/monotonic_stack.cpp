@@ -46,6 +46,20 @@ vector<int> nextSmallerElements(vector<int>& nums) {
     return nse ;
 }
 
+vector<int> previousSmallerElement(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> pse(n);
+    stack<int> st;
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && st.top() >= nums[i]) {
+            st.pop();
+        }
+        pse[i] = st.empty() ? -1 : st.top() ;
+        st.push(nums[i]);
+    }
+    return pse;
+}
+
 int trap(vector<int>& height) {
     int n = height.size() ;
     int lMax = 0 , rMax = 0 , total = 0 ;
@@ -65,4 +79,47 @@ int trap(vector<int>& height) {
         }
     }
     return total ;
+}
+
+vector<int> nextSmallerElements(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> nse(n, n);
+    stack<int> st;
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && nums[st.top()] >= nums[i])
+            st.pop();
+        if (!st.empty())
+            nse[i] = st.top();
+        st.push(i);
+    }
+    return nse;
+}
+
+vector<int> previousSmallerElement(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> pse(n, -1);
+    stack<int> st;
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && nums[st.top()] > nums[i])
+            st.pop();
+        if (!st.empty())
+            pse[i] = st.top();
+        st.push(i);
+    }
+    return pse;
+}
+
+int sumSubarrayMins(vector<int>& arr) {
+    int n = arr.size();
+    vector<int> pse = previousSmallerElement(arr);
+    vector<int> nse = nextSmallerElements(arr);
+    int mod = 1e9 + 7;
+    long long sum = 0;
+    for (int i = 0; i < n; i++) {
+        long long left = i - pse[i];
+        long long right = nse[i] - i;
+        long long freq = left * right;
+        sum = (sum + freq * arr[i]) % mod;
+    }
+    return (int) sum;
 }
