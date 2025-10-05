@@ -166,7 +166,6 @@ vector<int> previousGreaterElement(vector<int>& nums) {
     return pge;
 }
 
-
 long long subArrayRanges(vector<int>& nums) {
     int n = nums.size() ;
     vector<int> pse = previousSmallerElement (nums) ;
@@ -187,6 +186,48 @@ long long subArrayRanges(vector<int>& nums) {
         
     }
     return maxiSum - miniSum ;
+}
+
+string removeKdigits(string num, int k) {
+    int n = num.size() ;
+    stack <char> number ;
+    string ans ;
+    for ( int i = 0 ; i < n ; i++ ) {
+        while ( num[i] == '0' ) continue ;
+        while ( !number.empty() && k > 0 && (number.top() - '0') > num[i] - '0' ) {
+            number.pop() ;
+            k-- ;
+        }
+        number.push(num[i]) ;
+    }
+    while ( k > 0 ) {
+        number.pop() ;
+        k-- ;
+    }
+    if ( number.empty() ) return "0" ;
+    
+    while ( !number.empty() ) {
+        ans += number.top() ;
+        number.pop() ;
+    } 
+
+    while ( !ans.empty() && ans.back() == '0' ) ans.pop_back() ;
+    if ( ans.empty()) return "0" ;
+    reverse(ans.begin() , ans.end()) ;
+    return ans ;
+}
+
+int largestRectangleArea(vector<int>& heights) {
+    int n = heights.size() ;
+    long long ans = 0 ;
+    vector<int> pse = previousSmallerElement(heights) ;
+    vector<int> nse = nextSmallerElements ( heights ) ;
+    for ( int i = 0 ; i < n ; i++ ) {
+        int left = i - pse[i] ;
+        int right = nse[i] - i ;
+        ans = max ( ans , (long long )((left + right - 1)*heights[i])) ;
+    }
+    return (int)ans ;
 }
 
 int main () {
