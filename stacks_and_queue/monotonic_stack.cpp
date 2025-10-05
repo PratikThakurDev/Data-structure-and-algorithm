@@ -123,3 +123,73 @@ int sumSubarrayMins(vector<int>& arr) {
     }
     return (int) sum;
 }
+
+vector<int> asteroidCollision(vector<int>& asteroids) {
+    int n = asteroids.size() ;
+    vector<int> ans ;
+    for ( int i = 0 ; i < n ; i++ ) {
+        if ( asteroids[i] > 0 ) ans.push_back(asteroids[i]) ;
+        else {
+            while ( !ans.empty() && ans.back() > 0 && ans.back() < abs(asteroids[i] )) ans.pop_back() ;
+            if( !ans.empty() && ans.back() == abs(asteroids[i] ) ) ans.pop_back() ;
+            else if ( ans.empty() || ans.back() < 0 ) ans.push_back( asteroids[i]) ;
+        }
+    }
+    return ans ;
+}
+
+vector<int> nextGreaterElements(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> nge(n, n);
+    stack<int> st;
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && nums[st.top()] <= nums[i])
+            st.pop();
+        if (!st.empty())
+            nge[i] = st.top();
+        st.push(i);
+    }
+    return nge;
+}
+
+vector<int> previousGreaterElement(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> pge(n, -1);
+    stack<int> st;
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && nums[st.top()] < nums[i])
+            st.pop();
+        if (!st.empty())
+            pge[i] = st.top();
+        st.push(i);
+    }
+    return pge;
+}
+
+
+long long subArrayRanges(vector<int>& nums) {
+    int n = nums.size() ;
+    vector<int> pse = previousSmallerElement (nums) ;
+    vector<int> pge = previousGreaterElement (nums) ;
+    vector<int> nse = nextSmallerElements ( nums ) ;
+    vector<int> nge = nextGreaterElements (nums ); 
+    long long miniSum = 0 ;
+    long long maxiSum = 0 ;
+    for ( int i = 0 ; i < n ; i++ ) {
+        int left1 = i - pse[i] ;
+        int right1 = nse[i] - i ;
+        int left2 = i - pge[i] ;
+        int right2 = nge[i] - i ;
+        long long freq1 = left1 * right1 * 1LL ;
+        long long freq2 = left2 * right2 * 1LL ;
+        miniSum += freq1 * nums[i] * 1LL ;
+        maxiSum += freq2 * nums[i] * 1LL ;
+        
+    }
+    return maxiSum - miniSum ;
+}
+
+int main () {
+
+return 0 ;
+}
