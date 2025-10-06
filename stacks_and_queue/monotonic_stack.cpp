@@ -230,6 +230,50 @@ int largestRectangleArea(vector<int>& heights) {
     return (int)ans ;
 }
 
+int largestRectangleArea(vector<int>& heights) {
+    int n = heights.size();
+    stack<int> st;
+    int largestArea = 0;
+
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && heights[st.top()] >= heights[i]) {
+            int ind = st.top(); 
+            st.pop();
+            int pse = st.empty() ? -1 : st.top();
+            int nse = i;
+            int area = heights[ind] * (nse - pse - 1);
+            largestArea = max(largestArea, area);
+        }
+        st.push(i);
+    }
+
+    while (!st.empty()) {
+        int ind = st.top(); 
+        st.pop();
+        int pse = st.empty() ? -1 : st.top();
+        int nse = n;
+        int area = heights[ind] * (nse - pse - 1);
+        largestArea = max(largestArea, area);
+    }
+
+    return largestArea;
+}
+
+int maximalRectangle(vector<vector<char>>& matrix) {
+    if (matrix.empty()) return 0;
+    int n = matrix.size(), m = matrix[0].size();
+    vector<int> heights(m, 0);
+    int maxArea = 0;
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            heights[j] = (matrix[i][j] == '0') ? 0 : heights[j] + 1;
+        }
+        maxArea = max(maxArea, largestRectangleArea(heights));
+    }
+    return maxArea;
+}
+
 int main () {
 
 return 0 ;
