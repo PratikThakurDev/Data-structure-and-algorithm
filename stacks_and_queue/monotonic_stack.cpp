@@ -287,6 +287,25 @@ vector<int> maxSlidingWindow ( vector<int> & nums , int k ) {
     return ans ;
 }
 
+class StockSpanner {
+public:
+    stack<pair<int,int>> st ;
+    int ind = -1 ;
+    int ans ;
+    StockSpanner() {
+        while ( !st.empty()) st.pop() ;
+        ind = -1 ;
+    }
+    
+    int next(int price) {
+        ind++ ;
+        while ( !st.empty() && st.top().first <= price ) st.pop() ;
+        ans = ind - (st.empty() ? -1 : st.top().second ) ;
+        st.push({price,ind}) ;
+        return ans ;
+    }
+};
+
 int main () {
 
 return 0 ;
